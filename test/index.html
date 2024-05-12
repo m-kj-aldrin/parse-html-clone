@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>parse html & clone</title>
+
+        <style>
+            html,
+            body {
+                height: 100%;
+            }
+            body {
+                margin: 0;
+                padding: var(--padding, 4px);
+                box-sizing: border-box;
+                display: grid;
+
+                font-family: monospace;
+                line-height: 1;
+            }
+        </style>
+
+        <script
+            type="module"
+            src="/src/custom-elements/registerElements.js"
+        ></script>
+
+        <script type="module" src="app.js"></script>
+    </head>
+    <body></body>
+</html>
