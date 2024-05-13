@@ -234,6 +234,7 @@ export class ComModuleElement extends ComBaseElement {
 
 
 
+
         if (chain) {
             this.#chain = chain;
         }
@@ -246,9 +247,12 @@ export class ComModuleElement extends ComBaseElement {
         }
         if (this.#deferedSignal) {
             // This is only needed when dom isnt fully constructed
-            await waitForMicroTasks()
+            // await waitForMicroTasks()
 
-            this.signal(this.#deferedSignal);
+            // this.signal(this.#deferedSignal);
+            queueMicrotask(() => {
+                this.signal(this.#deferedSignal);
+            })
         }
     }
     disconnectedCallback() {
