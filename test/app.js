@@ -50,7 +50,6 @@
 //     module00.setOperatorParameters([rand0, rand1], true);
 // }, 500);
 
-
 // const network = document.querySelector("com-network")
 // const chain0 = network.querySelector("com-chain")
 
@@ -60,14 +59,26 @@
 
 // window.addEventListener("load", e => {
 
-const network = document.querySelector("com-network")
-const chain1 = document.createElement("com-chain").signal("new")
-const newModule0 = document.createElement("com-module").signal("insert").setOperatorType("lfo")
-const newModule1 = document.createElement("com-module").signal("insert").setOperatorType("lfo").setOperatorParameters([90, 70])
+const network = document.querySelector("com-network");
+const chain1 = document.createElement("com-chain").signal("new");
+const newModule0 = document
+    .createElement("com-module")
+    .signal("insert")
+    .setOperatorType("lfo");
+const newModule1 = document
+    .createElement("com-module")
+    .signal("insert")
+    .setOperatorType("lfo")
+    .setOperatorParameters([90, 70]);
 
-document.body.append(network)
-network.append(chain1)
-chain1.append(newModule0, newModule1)
+document.body.append(network);
+network.append(chain1);
+chain1.append(newModule0, newModule1);
+
+// setTimeout(() => {
+// queueMicrotask(() => {
+//     newModule1.setOperatorType("pth");
+// });
+// }, 1000);
 
 // })
-
