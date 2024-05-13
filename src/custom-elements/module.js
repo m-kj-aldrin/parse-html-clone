@@ -1,3 +1,4 @@
+import { waitForMicroTasks } from "../dom.js";
 import { ComBaseElement } from "./base.js";
 import { ComChainElement } from "./chain.js";
 import { SelectInputElement } from "./input/input.js";
@@ -27,6 +28,14 @@ export class ComModuleElement extends ComBaseElement {
             .prepend(this.#operatorSelect);
 
         this.#setupListeners();
+
+        let typeAttr = this.getAttribute("type")
+        if (typeAttr) {
+            this.setOperatorType(typeAttr)
+        }
+        if (this.hasAttribute("signal")) {
+            this.signal("insert")
+        }
     }
 
     /**@type {SelectInputElement} */
@@ -43,7 +52,7 @@ export class ComModuleElement extends ComBaseElement {
     get index() {
         let i = 0;
         let connectedToIntercomChildren = [...this.chain.comChildren].filter(
-            (m) => m.#connectedToIntercom
+            (m) => m.isConnectedToIntercom
         );
         for (const sibling of connectedToIntercomChildren) {
             if (sibling == this) {
@@ -71,7 +80,8 @@ export class ComModuleElement extends ComBaseElement {
     }
 
     get signature() {
-        let parametersString = this.#op.parameters.join(":");
+        // console.log(this.#op,this.#op.constructor.name);
+        let parametersString = this.#op.parameters?.join(":");
         let signatureString = `${this.#type}${parametersString}`;
         return signatureString;
     }
@@ -98,6 +108,8 @@ export class ComModuleElement extends ComBaseElement {
         let oldType = this.#type;
         this.#type = type;
 
+        // console.log("set type");
+
         if (this.isAttached) {
             const operator = document.createElement(`com-op-${this.#type}`);
             operator.slot = "operator";
@@ -119,7 +131,12 @@ export class ComModuleElement extends ComBaseElement {
 
                 this.signal("insert");
             } else if (!this.#deferedParameterValues.length) {
-                this.signal("insert");
+                // } else if (true) {
+                // this.signal("insert");
+            } else {
+                // console.log('set operator: ELSE');
+                // this.signal("insert")
+                // this.#deferedSignal = "insert"
             }
 
             return this;
@@ -139,7 +156,12 @@ export class ComModuleElement extends ComBaseElement {
             this.#deferedParameterValues = parameterValues;
             return this;
         }
+        // console.log('set parameters');
         this.#op.parameters = parameterValues;
+
+        if (!this.#connectedToIntercom) {
+            // this.#deferedSignal = "insert"
+        }
 
         if (signalAll) {
             this.#op.signalAll();
@@ -166,6 +188,8 @@ export class ComModuleElement extends ComBaseElement {
             return this;
         }
         this.#deferedSignal = null;
+
+        // console.log('signal module');
 
         let cidx = this.chain.index;
         let signalString = "";
@@ -205,12 +229,15 @@ export class ComModuleElement extends ComBaseElement {
         return this;
     }
 
-    connectedCallback() {
+    async connectedCallback() {
         let chain = this.closest("com-chain");
+
+
 
         if (chain) {
             this.#chain = chain;
         }
+
         if (this.#deferedType) {
             this.setOperatorType(this.#type);
         }
@@ -218,6 +245,9 @@ export class ComModuleElement extends ComBaseElement {
             this.setOperatorParameters(this.#deferedParameterValues, false);
         }
         if (this.#deferedSignal) {
+            // This is only needed when dom isnt fully constructed
+            await waitForMicroTasks()
+
             this.signal(this.#deferedSignal);
         }
     }

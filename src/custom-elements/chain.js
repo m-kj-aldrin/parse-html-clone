@@ -14,6 +14,10 @@ export class ComChainElement extends ComBaseElement {
         super();
 
         this.shadowRoot.append(outerTemplate.content.cloneNode(true));
+
+        if (this.hasAttribute("signal")) {
+            this.signal("new")
+        }
     }
 
     /**@type {ComNetworkElement} */
@@ -24,7 +28,7 @@ export class ComChainElement extends ComBaseElement {
     }
 
     get isAttached() {
-        return this.#network?.isAttached;
+        return this.#network?.isAttached && this.#connectedToIntercom;
     }
 
     get comChildren() {
@@ -53,7 +57,7 @@ export class ComChainElement extends ComBaseElement {
      */
     appendChild(node) {
         if (this.lastComChild == node) {
-            return node;
+            return node
         }
         super.appendChild(node);
         return node;
@@ -66,13 +70,17 @@ export class ComChainElement extends ComBaseElement {
     }
 
     /**@type {"new" | "edit" | "remove"} */
-    #deferedSignal = null;
+    #deferedSignal = null
+
+    #connectedToIntercom = false
+
+    // get connectedToIntercom
 
     /**
      * @param {"new" | "edit" | "remove"} type
      */
     signal(type) {
-        if (!this.isAttached) {
+        if (!this.#network?.isAttached) {
             if (type != "remove") {
                 this.#deferedSignal = type;
             }
@@ -85,18 +93,28 @@ export class ComChainElement extends ComBaseElement {
         switch (type) {
             case "new":
                 signalString = `chain -n`;
+                this.#connectedToIntercom = true
+                this.comChildren.forEach(child => {
+                    if (!child.isConnectedToIntercom) {
+                        // child.signal("insert")
+                    }
+                })
                 break;
             case "edit":
+                if (!this.#connectedToIntercom) break
                 signalString = `chain -e`;
                 break;
             case "remove":
                 signalString = `chain -r ${this.index}`;
+                this.#connectedToIntercom = false
                 break;
             default:
                 return this;
         }
 
-        console.log(signalString);
+        if (signalString) {
+            console.log(signalString);
+        }
 
         return this;
     }

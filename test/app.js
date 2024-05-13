@@ -1,31 +1,31 @@
-const network = document.body.appendChild(
-    document.createElement("com-network")
-);
+// const network = document.body.appendChild(
+//     document.createElement("com-network")
+// );
 
-const chain0 = document.createElement("com-chain").signal("new");
-const chain1 = document.createElement("com-chain").signal("new");
+// const chain0 = document.createElement("com-chain").signal("new");
+// const chain1 = document.createElement("com-chain").signal("new");
 
-network.append(chain0, chain1);
+// network.append(chain0, chain1);
 
-const module00 = document
-    .createElement("com-module")
-    .signal("insert")
-    .setOperatorType("lfo")
-    .setOperatorParameters([50, 10]);
+// const module00 = document
+//     .createElement("com-module")
+//     .signal("insert")
+//     .setOperatorType("lfo")
+//     .setOperatorParameters([50, 10]);
 
-// module00.setOperatorParameters()
+// // module00.setOperatorParameters()
 
-const module01 = document.createElement("com-module").setOperatorType("lfo");
+// const module01 = document.createElement("com-module").setOperatorType("lfo");
 
-const module02 = document.createElement("com-module");
+// const module02 = document.createElement("com-module");
 
-chain0.append(module00, module01, module02);
+// chain0.append(module00, module01, module02);
 
-console.log("\n");
+// console.log("\n");
 
-module01.setOperatorParameters([10, 20], true);
+// module01.setOperatorParameters([10, 20], true);
 
-module02.setOperatorParameters([]);
+// module02.setOperatorParameters([]);
 
 // module02.setOperatorParameters([1,2,3])
 
@@ -49,3 +49,25 @@ module02.setOperatorParameters([]);
 //     console.log("\n");
 //     module00.setOperatorParameters([rand0, rand1], true);
 // }, 500);
+
+
+// const network = document.querySelector("com-network")
+// const chain0 = network.querySelector("com-chain")
+
+// const module00 = document.createElement("com-module")
+
+// chain0.append(module00)
+
+// window.addEventListener("load", e => {
+
+const network = document.querySelector("com-network")
+const chain1 = document.createElement("com-chain").signal("new")
+const newModule0 = document.createElement("com-module").signal("insert").setOperatorType("lfo")
+const newModule1 = document.createElement("com-module").signal("insert").setOperatorType("lfo").setOperatorParameters([90, 70])
+
+document.body.append(network)
+network.append(chain1)
+chain1.append(newModule0, newModule1)
+
+// })
+

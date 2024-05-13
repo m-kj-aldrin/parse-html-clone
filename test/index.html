@@ -1,32 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>parse html & clone</title>
 
-        <style>
-            html,
-            body {
-                height: 100%;
-            }
-            body {
-                margin: 0;
-                padding: var(--padding, 4px);
-                box-sizing: border-box;
-                display: grid;
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>parse html & clone</title>
 
-                font-family: monospace;
-                line-height: 1;
-            }
-        </style>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
 
-        <script
-            type="module"
-            src="/src/custom-elements/registerElements.js"
-        ></script>
+        body {
+            margin: 0;
+            padding: var(--padding, 4px);
+            box-sizing: border-box;
+            display: grid;
 
-        <script type="module" src="app.js"></script>
-    </head>
-    <body></body>
+            font-family: monospace;
+            line-height: 1;
+
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+        }
+    </style>
+
+    <script type="module" src="/src/custom-elements/registerElements.js"></script>
+
+    <script type="module" src="app.js"></script>
+</head>
+
+<body>
+    <com-network>
+        <com-chain signal>
+            <com-module type="lfo" signal></com-module>
+            <com-module signal></com-module>
+        </com-chain>
+    </com-network>
+</body>
+
 </html>
